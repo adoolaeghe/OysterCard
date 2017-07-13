@@ -18,18 +18,14 @@ class Oystercard
 
   def touch_in(station)
     fail "touch in failed: the balance is lower than #{MIN_BALANCE}" if balance < MIN_BALANCE
-      deduct(@journey.penalty) if @journey.completed? == true
-      create_journey(station)
+    deduct(@journey.penalty) if completed?
+    create_journey(station)
   end
 
   def touch_out(station)
-    if @journey.completed? != true
-      deduct(@journey.penalty)
-    else
-      @journey.end_journey(station)
-      deduct(@journey.fare)
-      reset_journey
-    end
+    !completed? ? deduct(@journey.penalty) : deduct(@journey.fare)
+    @journey.end_journey(station)
+    reset_journey
   end
 
   private
@@ -45,5 +41,9 @@ class Oystercard
 
   def reset_journey
     @journey= Journey.new
+  end
+
+  def completed?
+  @journey.completed? == true
   end
 end
