@@ -1,19 +1,14 @@
 class Journey
-  attr_reader :fare, :complete, :penalty
+  attr_reader :fare, :penalty
   def initialize
     @entry_station = nil
     @exit_station = nil
     @fare = 1
     @penalty = 6
-    @complete = nil
-  end
-
-  def complete_journey
-    @complete = true if completed?
   end
 
   def completed?
-    @entry_station != nil && @exit_station != nil
+    @exit_station != nil || @entry_station != nil
   end
 
   def begin_journey(station)
