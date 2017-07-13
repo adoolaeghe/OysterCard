@@ -39,21 +39,25 @@ describe Oystercard do
   end
 
   describe '#touch_out(location)' do
-    before { oystercard.top_up(described_class::MIN_BALANCE)
-    oystercard.touch_in(location) }
+    before { oystercard.top_up(described_class::MIN_BALANCE)}
+    # before {oystercard.touch_in(location)}
     it "expect to charge the minimal fare" do
+      oystercard.touch_in(location)
       expect { oystercard.touch_out(location2) }.to change{oystercard.balance}.by(-described_class::MIN_FARE)
     end
     it 'should set entry_station to nil' do
+      oystercard.touch_in(location)
       oystercard.touch_out(location2)
       expect(oystercard.entry_station).to eq nil
     end
     it 'should store the journey' do
+      oystercard.touch_in(location)
       oystercard.touch_out(location2)
       expect(oystercard.journeys).to eq [{location => location2}]
     end
     it 'should raise an error when touching out from the same station' do
-    expect { oystercard.touch_out(location) }.to raise_error('No journeys have been stored')
+      oystercard.touch_in(location)
+      expect { oystercard.touch_out(location) }.to raise_error('No journeys have been stored')
     end
   end
 
