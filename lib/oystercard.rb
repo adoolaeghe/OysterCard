@@ -7,6 +7,7 @@ class Oystercard
     @balance = balance.to_f
     @in_journey = false
     @journeys = []
+    @journey = nil
   end
 
   def top_up(money)
@@ -20,23 +21,33 @@ class Oystercard
 
   def touch_in(station)
     fail "touch in failed: the balance is lower than #{MIN_BALANCE}" if balance < MIN_BALANCE
-    deduct(penalty) if in_journey?
-    @journeys << create_journey
+    if journeys == []
+      add_journey
+    else
+      deduct(@journey.penalty) if @journey.completed? == false
+      add_journey
+    end
   end
 
   def touch_out(station)
-    fail 'No journeys have been stored' if station == entry_station
-
-    @entry_station = nil
-    deduct(MIN_FARE)
+    if @journey.completed? == true
+      @journey
+      deduct(@journey.penalty)
+    else
+      @journey.end_journey(station)
+      @journey.complete_journey
+      deduct(MIN_FARE)
+    end
   end
 
-  def create_journey
-    Journey.new
+  def create_journey(station)
+    @journey = Journey.new
+    @journey.begin_journey(station)
   end
 
-  def in_journey?
-    @entry_station != nil
+  def add_journey
+    create_journey(station)
+    @journeys << @journey
   end
 end
 
@@ -48,3 +59,4 @@ mycard = Oystercard.new
 aldgate = Station.new('aldate',1)
 liverpool = Station.new('liverpool',1)
 mycard.top_up(10)
+mycard.touch_in(aldgate)
