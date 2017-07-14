@@ -1,5 +1,6 @@
 require_relative 'station'
 require_relative 'journey'
+require_relative 'journeylog'
 
 class Oystercard
   MAX_BALANCE = 90
@@ -41,6 +42,7 @@ class Oystercard
 
   def reset_journey
     @journey= Journey.new
+    @journeys << @journey
   end
 
   def completed?

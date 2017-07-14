@@ -4,6 +4,7 @@ describe Journey do
   let(:station) {'aldgate'}
   describe "#start_journey" do
     it 'should set entry_station when begin_journey' do
+
       expect(journey.begin_journey(station)).to eq station
     end
   end

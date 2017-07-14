@@ -1,5 +1,5 @@
 class Journey
-  attr_reader :fare, :penalty
+  attr_reader :fare, :penalty, :entry_station
   def initialize
     @entry_station = nil
     @exit_station = nil
