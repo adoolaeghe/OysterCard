@@ -14,7 +14,7 @@ describe Oystercard do
       expect(oystercard.balance).to eq(described_class::MIN_BALANCE)
     end
     it 'raise an error when top up more than max balance' do
-      expect {oystercard.top_up(described_class::MAX_BALANCE+1)}.to raise_error("top up failed the money exceeds #{described_class::MAX_BALANCE}")
+      expect {oystercard.top_up(described_class::MAX_BALANCE+1)}.to raise_error("top up failed: the money exceeds #{described_class::MAX_BALANCE}")
     end
   end
 
